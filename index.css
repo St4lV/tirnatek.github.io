@@ -25,6 +25,8 @@ body {
     grid-column: 2 / 6;
     grid-row: 1;
     font-size: 1.7em;
+}
+  .bgcentre{
     background-color: black;
 }
   .four {
@@ -32,13 +34,13 @@ body {
     flex-wrap:wrap;
     grid-column: 2 / 5;
     grid-row: 2;
-    background-color:  #012357;
+    background-color:  #153d63;
     justify-content: center; /* Centre horizontalement */
     align-items: center; /* Centre verticalement */
     text-align: center;
   }
   .lieninsta {
-    color:darkviolet;
+    color:rgb(138, 50, 175);
   }
   header {
     position: fixed;
@@ -48,7 +50,7 @@ body {
     background-color: #000000; /* Fond de l'en-tête */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre pour effet de profondeur */
     z-index: 1000; /* Assure que l'en-tête reste au-dessus des autres éléments */
-    font-size: 1.8em;
+    font-size: 1em;
   }
   footer {
     position: fixed;
@@ -92,6 +94,8 @@ body {
     border: none;
     bottom: 200px;
   }
+
+  
   /*.serviceatversion {
     text-align: center;
     grid-column: 1/7;
