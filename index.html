@@ -1,0 +1,194 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Tirnatek Radio</title>
+    <link href="index.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=PT+Sans+Narrow&display=swap" rel="stylesheet">  
+<script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+<script src="index.js"></script>
+<style>
+    table{
+        border-collapse: collapse;
+
+    }
+    th, td {
+        border: 1px solid rgb(255, 255, 255);
+        padding: 4px;
+        text-align: center;
+    }
+</style>
+</head>
+
+<body>
+        <header>
+    <div class="disposition">
+    <div class="one"><h1>Tirnatek Radio Snapshot 23w47a</h1>
+    <p>Heure Actuelle : <span id="heureParis"></span></p>
+</div>
+        </header>
+
+<footer>
+
+<div class="metadata">
+    <div id="playlist">Sendung</div>
+<span id="title">Titel</span> - <span id="artist">Artist</span>
+</div>
+
+<div class="lecteur-audio">
+<audio id="lecteurAudio" controls>
+        <source src="https://tirnatek.fr/listen/tntr/tntr128.mp3" type="audio/mp3">
+        Votre navigateur ne supporte pas l'élément audio.
+    </audio>
+</div>
+
+</div>
+    <!-- Votre script -->
+    <script>
+        $(document).ready(function(){
+            var lecteurAudio = $("#lecteurAudio");
+            var sourceAudio = ""; // Variable pour stocker la source audio
+
+            // Écoutez les clics sur tous les boutons avec la classe audioButton
+            $(".audioButton").click(function(){
+                sourceAudio = $(this).data("source"); // Récupère la source depuis l'attribut data-source du bouton cliqué
+                lecteurAudio[0].pause(); // Arrête la lecture actuelle
+                lecteurAudio[0].setAttribute('src', ''); // Réinitialise la source
+                lecteurAudio[0].load(); // Recharge l'audio
+                lecteurAudio.attr("src", sourceAudio); // Change la source
+                lecteurAudio[0].play(); // Lance la lecture du nouveau fichier audio
+            });
+        });
+            var nowPlayingTimeout;
+            var nowPlaying;
+
+         function loadNowPlaying() {
+    jQuery.ajax({
+        cache: false,
+        dataType: "json",
+        url: 'https://tirnatek.fr/api/nowplaying_static/tntr.json',
+        success: function(np) {
+            // Do something with the Now Playing data.   
+         nowPlaying = np;
+		jQuery('#title').text(np.now_playing.song.title);
+        jQuery('#artist').text(np.now_playing.song.artist);
+    if (np.live.is_live === false ) {
+            if (np.now_playing.playlist !== "") {
+                jQuery('#playlist').html('<span class="badge badge-info">Playlist:  '+ np.now_playing.playlist+ '</span>');
+            }  else  {
+                jQuery('#playlist').html('<span class="badge badge-important"> LIVE</span>');
+            }
+    }  else  {
+        jQuery('#playlist').html('<span class="badge badge-important">Live:  '+ np.live.streamer_name+ '</span>');
+    }
+        
+        
+            nowPlayingTimeout = setTimeout(loadNowPlaying, 15000);
+        }
+    }).fail(function() {
+        nowPlayingTimeout = setTimeout(loadNowPlaying, 30000);
+    });
+}
+
+jQuery(function() {
+    loadNowPlaying();
+});
+
+</script>
+  <div class="audiobuttons">
+    <button class="audioButton" data-source="https://tirnatek.fr/listen/tntr/tntr128.mp3">MP3 128kbps</button>
+    <button class="audioButton" data-source="https://tirnatek.fr/listen/tntr/tntr320.mp3">MP3 320kbps</button>
+    <button class="audioButton" data-source="https://tirnatek.fr/listen/tntr/tntr96.mp3">MP3 96kbps</button>
+</div>
+</footer>
+<script>
+  function dynamicSchedule() {
+      jQuery.ajax({
+          cache: false,
+          dataType: "json",
+          url: 'https://tirnatek.fr/api/station/tntr/schedule?now=now&rows=48',
+          success: function(gp) {
+              // Créer des tableaux vides pour stocker les valeurs de "name" et "start"
+              var namesArray = [];
+              var startTimesArray = [];
+  
+              // Parcourir chaque objet dans les données récupérées
+              $.each(gp, function(index, playlist) {
+                  // Extraire la valeur de la clé "name" de chaque objet et l'ajouter au tableau namesArray
+                  // Extraire la valeur de la clé "start" de chaque objet et l'ajouter au tableau startTimesArray
+                  namesArray.push(playlist.name);
+                  
+  
+                var startDate = new Date(playlist.start);
+                if (isNaN(startDate)) {
+                    // Gestion manuelle du format si la conversion échoue
+                    const parts = playlist.start.split(/[\sT\+]/);
+                    const [year, month, day] = parts[0].split('-');
+                    const [hour, minute, second] = parts[1].split(':');
+                    startDate = new Date(year, month - 1, day, hour, minute, second);
+                }
+
+                var formattedTime = startDate.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
+                startTimesArray.push(formattedTime);
+              
+              
+                });
+              
+            // Sélectionner le tbody où nous allons insérer les données
+            var tbody = $('#scheduleBody');
+
+            // Nettoyer le contenu existant du tbody
+            tbody.empty();
+
+            // Boucler à travers les tableaux pour générer le contenu du tableau HTML
+            for (var i = 0; i < namesArray.length; i++) {
+                var newRow = $('<tr>'); // Créer une nouvelle ligne
+
+                // Ajouter les données de "name" et "start" dans les cellules de la ligne
+                newRow.append($('<td>').text(namesArray[i]));
+                newRow.append($('<td>').text(startTimesArray[i]));
+                
+                // Ajouter la ligne au tbody
+                tbody.append(newRow);
+            }},
+          error: function(xhr, status, error) {
+              // Gérer les erreurs en cas d'échec de la requête
+              console.error(status, error);
+          }
+      });
+      
+  }
+  jQuery(function() {
+    dynamicSchedule();
+});
+  </script>
+   <div class="three">
+    <h2><br><br><br><br>Planning de diffusion</h2>
+    <p>(Effectif jusqu'au lendemain, minuit.)</p>
+
+    <table id="scheduleTable">
+    <thead>
+        <tr>
+            <th>Playlist</th>
+            <th>Heure de diffusion</th>
+        </tr>
+    </thead>
+    <tbody id="scheduleBody",class="policePlaylist">
+        <!-- Ici sera généré dynamiquement le contenu -->
+    </tbody>
+</table>
+   </div>
+   <div class="four">
+          <p>Rejoins nous sur instagram - <a href="https://instagram.com/tirnatek" class="lieninsta">@tirnatek</a></p> 
+          <p>N'hésitez pas à faire des suggestions de sons, sur l'interface, les playlists ect.. On prends ! :)</p>
+          <p>TeamTNTR@Radio~# Projet à but éducatif svp la SACEM soyez cool</p>
+          <!-- <div class="serviceatversion"></div> -->
+          <p> <br>TirnatekRadio@Beta2.2  <br>  <br>  <br>  <br>  <br>  <br>Si tu vois ça tu es un ptit malin</p>
+<!-- </div> -->
+          
+</div>
+</div>
+</body>
+</html>
+>
