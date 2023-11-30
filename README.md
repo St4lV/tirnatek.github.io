@@ -9,3 +9,7 @@ A basic web interface for Azuaracast radio station. Grabbing radio informations 
  * [ ] Timer for playing song
  * [ ] Album/song cover integration
  * [ ] Images buttons with link to social medias related with project
+ * [ ] Switch language on main page (English)
+
+
+(As i'm french, display language is currently in french on deployed page)
