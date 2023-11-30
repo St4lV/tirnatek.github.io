@@ -1,11 +1,31 @@
-function updateHeureParis() {
-    var date = new Date(); // Récupère l'heure actuelle
-    // Obtient l'heure avec le fuseau horaire "Europe/Paris"
-    var options = { timeZone: 'Europe/Paris', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
-    var heureParis = date.toLocaleString('en-US', options);
+document.addEventListener('DOMContentLoaded', function () {
+    var lecteurAudio = document.getElementById("lecteurAudio");
+    var sourceAudio = "";
 
-    document.getElementById("heureParis").textContent = heureParis; // Affiche l'heure dans l'élément HTML avec l'ID "heureParis"
-    
-};
-setInterval(updateHeureParis, 1000)
-updateHeureParis();
+    document.querySelectorAll(".audioButton").forEach(function (button) {
+        button.addEventListener('click', function () {
+            sourceAudio = this.getAttribute("data-source");
+            lecteurAudio.pause();
+            lecteurAudio.setAttribute('src', '');
+            lecteurAudio.load();
+            lecteurAudio.setAttribute("src", sourceAudio);
+            lecteurAudio.play();
+        });
+    });
+
+    updateHeureParis();
+    setInterval(updateHeureParis, 1000);
+});
+
+function updateHeureParis() {
+    var date = new Date();
+    var options = {
+        timeZone: 'Europe/Paris',
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    };
+    document.getElementById("heureParis").textContent = date.toLocaleString('en-US', options);
+}
+

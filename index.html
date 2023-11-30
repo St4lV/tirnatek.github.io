@@ -19,6 +19,18 @@
         text-align: center;
     }
 </style>
+<script>
+$(document).ready(function(){
+            var userAgent = navigator.userAgent;
+            if (userAgent.match(/Mobile/i)) {
+      // Si c'est un appareil mobile
+             window.location.href = 'm.index.html';
+            } else {
+      if(window.location.href.indexOf('index.html') === -1) {
+        window.location.href = 'index.html';
+      }}
+});
+</script>
 </head>
 
 <body>
@@ -28,75 +40,91 @@
     <p>Heure Actuelle : <span id="heureParis"></span></p>
 </div>
         </header>
+
 <footer>
+    
 <div class="lecteur-audio">
 <audio id="lecteurAudio" controls>
         <source src="https://tirnatek.fr/listen/tntr/tntr128.mp3" type="audio/mp3">
         Votre navigateur ne supporte pas l'élément audio.
     </audio>
-    <div class="metadata">
-    <div id="playlist">Sendung</div>
-<span id="title">Titel</span> - <span id="artist">Artist</span>
-</div>
-</div>
-</div>
 
+
+<div class="metadata">
+        <div id="playlist">Playlist</div>
+        <div id="musicInfoContainer"></div>
+        <div id="elapsedCounter" style="display: none;"></div>
+    </div>
+    
     <script>
-        $(document).ready(function(){
-            var userAgent = navigator.userAgent;
-            if (userAgent.match(/Mobile/i)) {
-      // Si c'est un appareil mobile
-             window.location.href = 'm.index.html';
-            } else {
-      if(window.location.href.indexOf('index.html') === -1) {
-        window.location.href = 'index.html';
-      }}
-            var lecteurAudio = $("#lecteurAudio");
-            var sourceAudio = "";
+function updateMusicInfo(artist, title, elapsedValue, duration) {
+    var formattedDuration = formatTime(duration);
+    var musicInfo = `<div><p>${artist} - ${title}</p><p id="elapsedCounter">${formatTime(elapsedValue)} / ${formattedDuration}</p></div>`;
+    $('#musicInfoContainer').html(musicInfo);
 
-            $(".audioButton").click(function(){
-                sourceAudio = $(this).data("source"); 
-                lecteurAudio[0].pause();
-                lecteurAudio[0].setAttribute('src', ''); 
-                lecteurAudio[0].load(); 
-                lecteurAudio.attr("src", sourceAudio); 
-                lecteurAudio[0].play();
-            });});
-            var nowPlayingTimeout;
-            var nowPlaying;
+    var startTime = Date.now();
 
-         function loadNowPlaying() {
-    jQuery.ajax({
-        cache: false,
-        dataType: "json",
-        url: 'https://tirnatek.fr/api/nowplaying_static/tntr.json',
+    // Actualisation toutes les secondes
+    function updateTime() {
+        var currentTime = Date.now();
+        var diff = currentTime - startTime; // Calculer la différence de temps depuis le début
+        var elapsed = Math.floor(elapsedValue + diff / 1000); // Mettre à jour elapsed en fonction du temps écoulé
 
-        success: function(np) {
-         nowPlaying = np;
-		jQuery('#title').text(np.now_playing.song.title);
-        jQuery('#artist').text(np.now_playing.song.artist);
-    if (np.live.is_live === false ) {
-            if (np.now_playing.playlist !== "") {
-                jQuery('#playlist').html('<span class="badge badge-info">Playlist:  '+ np.now_playing.playlist+ '</span>');
-            }  else  {
-                jQuery('#playlist').html('<span class="badge badge-important"> LIVE</span>');
-            }
-    }  else  {
-        jQuery('#playlist').html('<span class="badge badge-important">Live:  '+ np.live.streamer_name+ '</span>');
+        $('#elapsedCounter').text(formatTime(elapsed) + ' / ' + formattedDuration);
+        setTimeout(updateTime, 1000); // Planifier la prochaine actualisation dans 1 seconde
     }
-        
-        
-            nowPlayingTimeout = setTimeout(loadNowPlaying, 15000); }
-    }).fail(function() {
-        nowPlayingTimeout = setTimeout(loadNowPlaying, 30000);
- });}
 
-jQuery(function() {
+    updateTime(); // Démarrer la première actualisation
+
+    setTimeout(function () {
+        loadNowPlaying();
+        elapsed = 0; // Réinitialiser elapsed lorsque la nouvelle musique commence
+    }, duration * 1000); // Réinitialiser elapsed à la durée de la musique
+}
+
+
+
+
+function formatTime(seconds) {
+    var date = new Date(null);
+    date.setSeconds(seconds);
+    return date.toISOString().substr(14, 5);
+}
+
+function loadNowPlaying() {
+    $.getJSON('https://tirnatek.fr/api/nowplaying_static/tntr.json', function (np) {
+        var artist = np.now_playing.song.artist;
+        var title = np.now_playing.song.title;
+        var elapsedValue = parseInt(np.now_playing.elapsed) || 0;
+        var duration = np.now_playing.duration;
+
+        updateMusicInfo(artist, title, elapsedValue, duration);
+
+        if (np.live.is_live === false) {
+            if (np.now_playing.playlist !== "") {
+                $('#playlist').html('<span class="badge badge-info">Playlist: ' + np.now_playing.playlist + '</span>');
+            } else {
+                $('#playlist').html('<span class="badge badge-important">LIVE</span>');
+            }
+        } else {
+            $('#playlist').html('<span class="badge badge-important">Live: ' + np.live.streamer_name + '</span>');
+        }
+
+        setTimeout(loadNowPlaying, 15000);
+    }).fail(function () {
+        console.error('Failed to fetch data. Retrying in 30 seconds...');
+        setTimeout(loadNowPlaying, 30000);
+    });
+setInterval(loadNowPlaying, 15000)
+}
+
+$(document).ready(function () {
     loadNowPlaying();
 });
-
-</script>
-
+    </script>        
+</div>
+</div>
+</div>
   <div class="audiobuttons">
     <button class="audioButton" data-source="https://tirnatek.fr/listen/tntr/tntr128.mp3">MP3 128kbps</button>
     <button class="audioButton" data-source="https://tirnatek.fr/listen/tntr/tntr320.mp3">MP3 320kbps</button>
@@ -164,7 +192,7 @@ jQuery(function() {
           <p>Rejoins nous sur instagram - <a href="https://instagram.com/tirnatek" class="lieninsta">@tirnatek</a></p> 
           <p>N'hésitez pas à faire des suggestions de sons, sur l'interface, les playlists ect.. On prends ! :)</p>
           <p>TeamTNTR@Radio~# Projet à but éducatif svp la SACEM soyez cool</p>
-          <p> <br>TirnatekRadio@Beta2.2  <br>  <br>  <br>  <br>  <br>Nooo ..  don't look at my code like this.. Senpaiiiiii{">.<}</p>
+          <p>TirnatekRadio@Beta2.2 <br> <br> <br>  <br>  <br>  <br>  <br>Nooo ..  don't look at my code like this.. Senpaiiiiii{">.<}</p>
 </div>
 </div>
 </div>
