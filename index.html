@@ -55,12 +55,14 @@ $(document).ready(function(){
         Votre navigateur ne supporte pas l'élément audio.
     </audio>
 
-
-<div class="metadata">
+ <div class="cover-nps">
+    <div id="npCover"></div>
+</div>
+ <div class="metadata">
     <div id="playlist">Playlist</div>
     <div id="musicInfoContainer"></div>
     <div id="elapsedCounter" style="display: none;"></div>
-    </div>
+</div>
     
     <script>
 var currentSongId = null;
@@ -82,7 +84,7 @@ function updateMusicInfo(artist, title, elapsedValue, duration, songId) {
 
     setTimeout(function () {
         loadNowPlaying();
-    }, duration * 1000);
+    }, duration * 20000);
 }
 
 function updateElapsedTime() {
@@ -104,6 +106,7 @@ function loadNowPlaying() {
         var elapsedValue = parseInt(np.now_playing.elapsed) || 0;
         var duration = np.now_playing.duration;
         var songId = np.now_playing.sh_id;
+        var songImg = np.now_playing.art;
 
         updateMusicInfo(artist, title, elapsedValue, duration, songId);
 
@@ -122,6 +125,7 @@ function loadNowPlaying() {
         console.error('Failed to fetch data. Retrying in 30 seconds...');
         setTimeout(loadNowPlaying, 30000);
     });
+    ('#npCover').html(`<img src="${songImg}" alt="Cover">`);
 }
 
 $(document).ready(function () {
