@@ -6,7 +6,7 @@ A basic web interface for Azuaracast radio station. Grabbing radio informations 
  * [x] Audio flux quality choice (128kbps (default); 320kbps; 96kbps)
  * [x] Diffusion schedule up to next day, 23h59 UTC+1 Paris.
  * [x] Mobile adapted page for better ergonomy
- * [ ] Timer for playing song
+ * [x] Timer for playing song
  * [ ] Album/song cover integration
  * [ ] Images buttons with link to social medias related with project
  * [ ] Switch language on main page (English)
