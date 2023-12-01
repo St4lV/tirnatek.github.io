@@ -2,12 +2,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Tirnatek Radio</title>
+
+    <link rel="icon" type="image/png" href="TNTRcolor.png">
+    <meta property="image/png" content="TNTcolor.png">
+    
     <link href="index.css" rel="stylesheet">
+    <script src="index.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=PT+Sans+Narrow&display=swap" rel="stylesheet">  
-<script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
-<script src="index.js"></script>
+
 <style>
     table{
         border-collapse: collapse;
@@ -50,45 +56,33 @@
 </div>
 
     <script>
-        $(document).ready(function(){
-            var lecteurAudio = $("#lecteurAudio");
-            var sourceAudio = "";
+var currentSongId = null;
+var formattedDuration = null;
+var startTime = null;
+var timer = null;
 
-            $(".audioButton").click(function(){
-                sourceAudio = $(this).data("source"); 
-                lecteurAudio[0].pause();
-                lecteurAudio[0].setAttribute('src', '');
-                lecteurAudio[0].load();
-                lecteurAudio.attr("src", sourceAudio);
-                lecteurAudio[0].play();
-            });});
-            function updateMusicInfo(artist, title, elapsedValue, duration) {
-    var formattedDuration = formatTime(duration);
+function updateMusicInfo(artist, title, elapsedValue, duration, songId) {
+    formattedDuration = formatTime(duration);
     var musicInfo = `<div><p>${artist} - ${title}</p><p id="elapsedCounter">${formatTime(elapsedValue)} / ${formattedDuration}</p></div>`;
     $('#musicInfoContainer').html(musicInfo);
 
-    var startTime = Date.now();
-
-    // Actualisation toutes les secondes
-    function updateTime() {
-        var currentTime = Date.now();
-        var diff = currentTime - startTime; // Calculer la différence de temps depuis le début
-        var elapsed = Math.floor(elapsedValue + diff / 1000); // Mettre à jour elapsed en fonction du temps écoulé
-
-        $('#elapsedCounter').text(formatTime(elapsed) + ' / ' + formattedDuration);
-        setTimeout(updateTime, 1000); // Planifier la prochaine actualisation dans 1 seconde
+    if (currentSongId !== songId) {
+        currentSongId = songId;
+        clearInterval(timer);
+        startTime = Date.now() - elapsedValue * 1000;
+        timer = setInterval(updateElapsedTime, 1000);
     }
-
-    updateTime(); // Démarrer la première actualisation
 
     setTimeout(function () {
         loadNowPlaying();
-        elapsed = 0; // Réinitialiser elapsed lorsque la nouvelle musique commence
-    }, duration * 1000); // Réinitialiser elapsed à la durée de la musique
+    }, duration * 1000);
 }
 
-
-
+function updateElapsedTime() {
+    var currentTime = Date.now();
+    var elapsed = Math.floor((currentTime - startTime) / 1000);
+    $('#elapsedCounter').text(formatTime(elapsed) + ' / ' + formattedDuration);
+}
 
 function formatTime(seconds) {
     var date = new Date(null);
@@ -102,8 +96,9 @@ function loadNowPlaying() {
         var title = np.now_playing.song.title;
         var elapsedValue = parseInt(np.now_playing.elapsed) || 0;
         var duration = np.now_playing.duration;
+        var songId = np.now_playing.sh_id;
 
-        updateMusicInfo(artist, title, elapsedValue, duration);
+        updateMusicInfo(artist, title, elapsedValue, duration, songId);
 
         if (np.live.is_live === false) {
             if (np.now_playing.playlist !== "") {
@@ -120,12 +115,12 @@ function loadNowPlaying() {
         console.error('Failed to fetch data. Retrying in 30 seconds...');
         setTimeout(loadNowPlaying, 30000);
     });
-setInterval(loadNowPlaying, 15000)
 }
 
 $(document).ready(function () {
     loadNowPlaying();
 });
+
 </script>
 </footer>
 <script>
@@ -187,16 +182,15 @@ $(document).ready(function () {
 </table>
    </div>
 <div class="datefin">
-   <p><br>  <br>  <br>  <br>  <br>  <br>  <br>  <br>  >@2023tntr</p>    
+   <p><br>  <br>  <br>  <br>  <br>  <br>  <br>  >@2023tntr</p>    
 </div>
    <div class="four">
 
           <p><br>Rejoins nous sur instagram - <a href="https://instagram.com/tirnatek" class="lieninsta">@tirnatek</a></p> 
           <p>N'hésitez pas à faire des suggestions de sons, sur l'interface, les playlists ect.. On prends ! :)</p>
-          <p>TeamTNTR@Radio~# Projet à but éducatif svp la SACEM soyez cool <br>  <br> <br>  <br>  <br>  <br>  <br>  <br>  <br>  <br>Si tu vois ça tu es un ptit malin</p>
+          <p>TeamTNTR@Radio~# Projet à but éducatif svp la SACEM soyez cool <br>  <br> <br>  <br>  <br>  <br>  <br>  <br>  <br>  <br><br>  <br>  <br>Si tu vois ça tu es un ptit malin ou tu as un grand écran</p>
 </div>          
 </div>
 </div>
 </body>
 </html>
->

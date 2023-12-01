@@ -19,13 +19,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function updateHeureParis() {
     var date = new Date();
-    var options = {
-        timeZone: 'Europe/Paris',
-        hour12: false,
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-    };
+    var options = { timeZone: 'Europe/Paris', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
     document.getElementById("heureParis").textContent = date.toLocaleString('en-US', options);
 }
-
