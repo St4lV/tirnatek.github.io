@@ -52,6 +52,22 @@ header {
   z-index: 1000; /* Assure que l'en-tête reste au-dessus des autres éléments */
   font-size: 1em;
 }
+.apb-insta {
+  color: #fff;
+  position: fixed;
+  text-align: left;
+  left: 50;
+  top:35;
+  font-size: 3em
+}
+.apb-discord {
+  color: #fff;
+  position: fixed;
+  text-align: left;
+  left: 150;
+  top:35;
+  font-size: 3em
+}
 footer {
   position: fixed;
   bottom: 0;

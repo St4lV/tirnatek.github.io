@@ -39,9 +39,9 @@ body {
     align-items: center; /* Centre verticalement */
     text-align: center;
   }
-  .lieninsta {
+  /*.lieninsta {
     color:rgb(138, 50, 175);
-  }
+  }*/
   header {
     position: fixed;
     top: 0; /* Fixe l'en-tête en haut de la page */
@@ -52,7 +52,23 @@ body {
     z-index: 1000; /* Assure que l'en-tête reste au-dessus des autres éléments */
     font-size: 1em;
   }
-  footer {
+  .apb-insta {
+    color: #fff;
+    position: fixed;
+    text-align: left;
+    left: 50;
+    top:35;
+    font-size: 3em
+  }
+  .apb-discord {
+    color: #fff;
+    position: fixed;
+    text-align: left;
+    left: 150;
+    top:35;
+    font-size: 3em
+  }
+    footer {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -94,7 +110,6 @@ body {
     border: none;
     bottom: 200px;
   }
-
   
   /*.serviceatversion {
     text-align: center;
