@@ -7,9 +7,9 @@ A basic web interface for Azuaracast radio station. Grabbing radio informations 
  * [x] Diffusion schedule up to next day, 23h59 UTC+1 Paris.
  * [x] Mobile adapted page for better ergonomy
  * [x] Timer for playing song
+ * [x] Images buttons with link to social medias related with project
  * [ ] Custom audio player 
  * [ ] Album/song cover integration
- * [ ] Images buttons with link to social medias related with project
  * [ ] Switch language on main page (English)
 
 
