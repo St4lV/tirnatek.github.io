@@ -110,7 +110,26 @@ body {
     border: none;
     bottom: 200px;
   }
-  
+  #custom-progress {
+    width: 100%;
+    height: 20px;
+    background-color: lightgray;
+    border-radius: 10px;
+    grid-column: 1/8;
+  }
+  #progress-bar {
+    height: 100%;
+    border-radius: 10px;
+    background-color: #18446d;
+    grid-column: 1/8;
+  }
+  #custom-progress {
+    width: 30%; /* Un tiers de la page */
+    height: 20px;
+    background-color: lightgray;
+    border-radius: 10px;
+    margin: 20px auto; /* Centrage horizontal */
+  }
   /*.serviceatversion {
     text-align: center;
     grid-column: 1/7;
