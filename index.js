@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', function () {
             lecteurAudio.play();
         });
     });
-
     updateHeureParis();
     setInterval(updateHeureParis, 1000);
 });

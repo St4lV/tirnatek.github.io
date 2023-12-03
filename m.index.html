@@ -42,11 +42,14 @@
     <div class="one"><h1>Tirnatek Radio Bêta 2.2</h1>
     <p>Heure Actuelle : <span id="heureParis"></span></p>
 </div>
+<div id="playlist">Playlist</div>
 <div class="lecteur-audio">
-    <audio id="lecteurAudio" controls>
-            <source src="https://tirnatek.fr/listen/tntr/tntr128.mp3" type="audio/mp3">
+    <div class="l-a-display"> 
+        <audio id="lecteurAudio" controls>
+            <source src="https://tirnatek.fr/listen/tntr/tntr128.mp3" type="audio/mp3" display="none">
             Votre navigateur ne supporte pas l'élément audio.
         </audio>
+    </div> 
 </div>
 <div class="audiobuttons">
     <button class="audioButton" data-source="https://tirnatek.fr/listen/tntr/tntr128.mp3">MP3 128kbps</button>
@@ -55,90 +58,119 @@
 </div>
         </header>
 <footer>
+    <div class="play-button"></div>
+        <button id="playButton">
+            <i id="icon" class="fas fa-play"></i>
+        </button>  
+    </div>
     <div class="metadata">
-        <h4>En cours</h4>
-        <div id="playlist">Playlist</div>
         <div id="musicInfoContainer"></div>
         <div id="elapsedCounter" style="display: none;"></div>
     <p> <br>TirnatekRadio@Beta2.2 <br> ~-~ </p>
 </div>
 </div>
 
-    <script>
-var currentSongId = null;
-var formattedDuration = null;
-var startTime = null;
-var timer = null;
-
-function updateMusicInfo(artist, title, elapsedValue, duration, songId) {
-    formattedDuration = duration; // Gardez la durée au format initial (en secondes)
-    var musicInfo = `   <p>${artist} - ${title}</p><p id="elapsedCounter">${formatTime(elapsedValue)} / ${formatTime(formattedDuration)}</p></div><div id="custom-progress"> <div id="progress-bar"></div> </div>
-      <div>`;
-    $('#musicInfoContainer').html(musicInfo);
-
-    if (currentSongId !== songId) {
-        currentSongId = songId;
-        clearInterval(timer);
-        startTime = Date.now() - elapsedValue * 1000;
-        timer = setInterval(updateElapsedTime, 1000);
-    }
-
-    setTimeout(function () {
-        loadNowPlaying();
-    }, duration * 20000);
-}
-
-function updateElapsedTime() {
-    var currentTime = Date.now();
-    var elapsed = Math.floor((currentTime - startTime) / 1000);
-    var timebarValue = Math.floor((elapsed * 100 / formattedDuration));
-    $('#elapsedCounter').text(formatTime(elapsed) + ' / ' + formatTime(formattedDuration));
-    updateProgressBar(timebarValue);
-}
-
-function formatTime(seconds) {
-    var date = new Date(null);
-    date.setSeconds(seconds);
-    return date.toISOString().substr(14, 5);
-}
-
-function loadNowPlaying() {
-    $.getJSON('https://tirnatek.fr/api/nowplaying_static/tntr.json', function (np) {
-        var artist = np.now_playing.song.artist;
-        var title = np.now_playing.song.title;
-        var elapsedValue = parseInt(np.now_playing.elapsed) || 0;
-        var duration = parseInt(np.now_playing.duration) || 0; // Récupérez la durée en secondes directement
-        var songId = np.now_playing.sh_id;
-        var songImg = np.now_playing.art;
-
-        updateMusicInfo(artist, title, elapsedValue, duration, songId);
-
-        if (np.live.is_live === false) {
-            if (np.now_playing.playlist !== "") {
-                $('#playlist').html('<span class="badge badge-info">Playlist: ' + np.now_playing.playlist + '</span>');
-            } else {
-                $('#playlist').html('<span class="badge badge-important">LIVE</span>');
-            }
+<script>
+    $(document).ready(function() {
+      $('#playButton').on('click', function() {
+        var lecteurAudio = document.getElementById("lecteurAudio");
+        var icon = $(this).hasClass('play-button') ? $(this).find('.icon') : $('#icon');
+    
+        if (icon.hasClass('fa-play')) {
+          lecteurAudio.play();
+          icon.removeClass('fa-play').addClass('fa-stop');
         } else {
-            $('#playlist').html('<span class="badge badge-important">Live: ' + np.live.streamer_name + '</span>');
+          lecteurAudio.pause();
+          icon.removeClass('fa-stop').addClass('fa-play');
         }
-
-        setTimeout(loadNowPlaying, 15000);
-    }).fail(function () {
-        console.error('Failed to fetch data. Retrying in 30 seconds...');
-        setTimeout(loadNowPlaying, 30000);
+      });
     });
-    $('#npCover').html(`<img src="${songImg}" alt="Cover">`);
-}
-
-function updateProgressBar(value) {
-    $('#progress-bar').css('width', value + '%');
-}
-
-$(document).ready(function () {
-    loadNowPlaying();
-});
-</script>
+    $(document).ready(function() {
+      $('.audioButton').on('click', function() {
+        var icon = $('#icon');
+        if (icon.hasClass('fa-play')) {
+          icon.removeClass('fa-play').addClass('fa-stop'); // Remplacez les classes pour changer l'icône
+        } 
+      });
+    });
+    
+    var currentSongId = null;
+    var formattedDuration = null;
+    var startTime = null;
+    var timer = null;
+    
+    function updateMusicInfo(artist, title, elapsedValue, duration, songId) {
+        formattedDuration = duration; // Gardez la durée au format initial (en secondes)
+        var musicInfo = `   <p>${artist} - ${title}</p><p id="elapsedCounter">${formatTime(elapsedValue)} / ${formatTime(formattedDuration)}</p>
+        <div id="custom-progress"> <div id="progress-bar"></div>
+        </div><div></div>`;
+        $('#musicInfoContainer').html(musicInfo);
+    
+        if (currentSongId !== songId) {
+            currentSongId = songId;
+            clearInterval(timer);
+            startTime = Date.now() - elapsedValue * 1000;
+            timer = setInterval(updateElapsedTime, 1000);
+        }
+    
+        setTimeout(function () {
+            loadNowPlaying();
+        }, duration * 20000);
+    }
+    
+    function updateElapsedTime() {
+        var currentTime = Date.now();
+        var elapsed = Math.floor((currentTime - startTime) / 1000);
+        var timebarValue = Math.floor((elapsed * 100 / formattedDuration));
+        $('#elapsedCounter').text(formatTime(elapsed) + ' / ' + formatTime(formattedDuration));
+        updateProgressBar(timebarValue);
+    }
+    
+    function formatTime(seconds) {
+        var date = new Date(null);
+        date.setSeconds(seconds);
+        return date.toISOString().substr(14, 5);
+    }
+    
+    function loadNowPlaying() {
+        $.getJSON('https://tirnatek.fr/api/nowplaying_static/tntr.json', function (np) {
+            var artist = np.now_playing.song.artist;
+            var title = np.now_playing.song.title;
+            var elapsedValue = parseInt(np.now_playing.elapsed) || 0;
+            var duration = parseInt(np.now_playing.duration) || 0; // Récupérez la durée en secondes directement
+            var songId = np.now_playing.sh_id;
+            var songImg = np.now_playing.art;
+    
+            updateMusicInfo(artist, title, elapsedValue, duration, songId);
+    
+            if (np.live.is_live === false) {
+                if (np.now_playing.playlist !== "") {
+                    $('#playlist').html('<span class="badge badge-info">Playlist: ' + np.now_playing.playlist + '</span>');
+                } else {
+                    $('#playlist').html('<span class="badge badge-important">LIVE</span>');
+                }
+            } else {
+                $('#playlist').html('<span class="badge badge-important">Live: ' + np.live.streamer_name + '</span>');
+            }
+    
+            setTimeout(loadNowPlaying, 15000);
+        }).fail(function () {
+            console.error('Failed to fetch data. Retrying in 30 seconds...');
+            setTimeout(loadNowPlaying, 30000);
+        });
+        $('#npCover').html(`<img src="${songImg}" alt="Cover">`);
+    }
+    
+    function updateProgressBar(value) {
+        $('#progress-bar').css('width', value + '%');
+    }
+    
+    $(document).ready(function () {
+        loadNowPlaying();
+    });
+    
+    
+        </script> 
 </footer>
 <script>
     function dynamicSchedule() {
