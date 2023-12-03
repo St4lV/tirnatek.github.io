@@ -71,8 +71,9 @@ var startTime = null;
 var timer = null;
 
 function updateMusicInfo(artist, title, elapsedValue, duration, songId) {
-    formattedDuration = formatTime(duration);
-    var musicInfo = `<div><p>${artist} - ${title}</p><p id="elapsedCounter">${formatTime(elapsedValue)} / ${formattedDuration}</p></div>`;
+    formattedDuration = duration; // Gardez la durée au format initial (en secondes)
+    var musicInfo = `   <p>${artist} - ${title}</p><p id="elapsedCounter">${formatTime(elapsedValue)} / ${formatTime(formattedDuration)}</p></div><div id="custom-progress"> <div id="progress-bar"></div> </div>
+      <div>`;
     $('#musicInfoContainer').html(musicInfo);
 
     if (currentSongId !== songId) {
@@ -90,7 +91,9 @@ function updateMusicInfo(artist, title, elapsedValue, duration, songId) {
 function updateElapsedTime() {
     var currentTime = Date.now();
     var elapsed = Math.floor((currentTime - startTime) / 1000);
-    $('#elapsedCounter').text(formatTime(elapsed) + ' / ' + formattedDuration);
+    var timebarValue = Math.floor((elapsed * 100 / formattedDuration));
+    $('#elapsedCounter').text(formatTime(elapsed) + ' / ' + formatTime(formattedDuration));
+    updateProgressBar(timebarValue);
 }
 
 function formatTime(seconds) {
@@ -104,8 +107,9 @@ function loadNowPlaying() {
         var artist = np.now_playing.song.artist;
         var title = np.now_playing.song.title;
         var elapsedValue = parseInt(np.now_playing.elapsed) || 0;
-        var duration = np.now_playing.duration;
+        var duration = parseInt(np.now_playing.duration) || 0; // Récupérez la durée en secondes directement
         var songId = np.now_playing.sh_id;
+        var songImg = np.now_playing.art;
 
         updateMusicInfo(artist, title, elapsedValue, duration, songId);
 
@@ -124,12 +128,16 @@ function loadNowPlaying() {
         console.error('Failed to fetch data. Retrying in 30 seconds...');
         setTimeout(loadNowPlaying, 30000);
     });
+    $('#npCover').html(`<img src="${songImg}" alt="Cover">`);
+}
+
+function updateProgressBar(value) {
+    $('#progress-bar').css('width', value + '%');
 }
 
 $(document).ready(function () {
     loadNowPlaying();
 });
-
 </script>
 </footer>
 <script>

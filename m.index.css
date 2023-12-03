@@ -57,7 +57,7 @@ header {
   position: fixed;
   text-align: left;
   left: 50;
-  top:35;
+  top: 35;
   font-size: 3em
 }
 .apb-discord {
@@ -113,6 +113,19 @@ button {
 .datefin {
   font-size: 0.1em;
   color:black;
+}
+#progress-bar {
+  height: 100%;
+  border-radius: 10px;
+  background-color: #18446d;
+  grid-column: 1/8;
+}
+#custom-progress {
+  width: 30%; /* Un tiers de la page */
+  height: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  margin: 20px auto; /* Centrage horizontal */
 }
 /*.serviceatversion {
   text-align: center;
