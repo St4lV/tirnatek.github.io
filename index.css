@@ -28,6 +28,7 @@ body {
 }
   .bgcentre{
     background-color: black;
+    grid-template-columns: repeat(1, 2fr)
 }
   .four {
     display:grid;
@@ -110,13 +111,6 @@ body {
     border: none;
     bottom: 200px;
   }
-  #custom-progress {
-    width: 100%;
-    height: 20px;
-    background-color: lightgray;
-    border-radius: 10px;
-    grid-column: 1/8;
-  }
   #progress-bar {
     height: 100%;
     border-radius: 10px;
@@ -147,4 +141,15 @@ body {
     text-align: left;
     left: 150;
     bottom: 67.5;
+  }
+  #np-cover{
+    box-sizing: content-box;
+    border: 10px;
+    position: fixed;
+    text-align: left;
+    left: 150;
+    bottom: 67.5;
+    width: 100px;
+    padding: 20px;
+    height: auto;
   }
