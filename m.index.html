@@ -38,6 +38,10 @@
      <div class="apb-discord">
          <i class="fa-brands fa-discord"></i></div></a>
 
+         <a href="https://github.com/St4lV/St4lV.github.io" class="liengithub" target="_blank">
+            <div class="apb-github">
+               <i class="fa-brands fa-github"></i></div></a>
+
     <div class="disposition">
     <div class="one"><h1>Tirnatek Radio Bêta 2.2</h1>
     <p>Heure Actuelle : <span id="heureParis"></span></p>
@@ -141,9 +145,11 @@
             var elapsedValue = parseInt(np.now_playing.elapsed) || 0;
             var duration = parseInt(np.now_playing.duration) || 0; // Récupérez la durée en secondes directement
             var songId = np.now_playing.sh_id;
-            var songImg = np.now_playing.art;
+            var songImg = np.now_playing.song.art;
     
-            updateMusicInfo(artist, title, elapsedValue, duration, songId);
+            updateMusicInfo(artist, title, elapsedValue, duration, songId, songImg);
+            
+            $('#np-cover').html(`<img src="${songImg}" alt="Cover">`);
     
             if (np.live.is_live === false) {
                 if (np.now_playing.playlist !== "") {
@@ -160,7 +166,6 @@
             console.error('Failed to fetch data. Retrying in 30 seconds...');
             setTimeout(loadNowPlaying, 30000);
         });
-        $('#npCover').html(`<img src="${songImg}" alt="Cover">`);
     }
     
     function updateProgressBar(value) {
@@ -173,6 +178,7 @@
     
     
         </script> 
+        <div id="np-cover"></div>
 </footer>
 <script>
     function dynamicSchedule() {

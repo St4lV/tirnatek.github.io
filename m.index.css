@@ -28,6 +28,7 @@ body {
 }
 .bgcentre{
   background-color: black;
+  grid-template-columns: repeat(1, 2fr)
 }
 .four {
   display:grid;
@@ -68,7 +69,15 @@ header {
   top:35;
   font-size: 3em
 }
-  footer {
+.apb-github {
+color: #fff;
+position: fixed;
+text-align: left;
+right: 50;
+top:35;
+font-size: 3em
+}
+footer {
   position: fixed;
   bottom: 0;
   left: 0;
@@ -136,8 +145,19 @@ button {
   border: 10px;
   background-color: #000000;
   color: #fff;
-  position: fixed; 
-  text-align: center;
-  left: 150;
+  position: fixed;
+  text-align: left;
+  left: 175;
   bottom: 67.5;
+}
+img{
+  box-sizing: content-box;
+  border: 10px;
+  position: fixed;
+  text-align: left;
+  left: 5;
+  bottom: 35;
+  width: 100px;
+  padding: 20px;
+  height: auto;
 }

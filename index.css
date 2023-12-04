@@ -69,7 +69,15 @@ body {
     top:35;
     font-size: 3em
   }
-    footer {
+.apb-github {
+  color: #fff;
+  position: fixed;
+  text-align: left;
+  right: 50;
+  top:35;
+  font-size: 3em
+}
+  footer {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -139,16 +147,16 @@ body {
     color: #fff;
     position: fixed;
     text-align: left;
-    left: 150;
+    left: 175;
     bottom: 67.5;
   }
-  #np-cover{
+  img{
     box-sizing: content-box;
     border: 10px;
     position: fixed;
     text-align: left;
-    left: 150;
-    bottom: 67.5;
+    left: 5;
+    bottom: 35;
     width: 100px;
     padding: 20px;
     height: auto;
