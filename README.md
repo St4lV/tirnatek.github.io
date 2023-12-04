@@ -8,8 +8,8 @@ A basic web interface for Azuaracast radio station. Grabbing radio informations 
  * [x] Mobile adapted page for better ergonomy
  * [x] Timer for playing song
  * [x] Images buttons with link to social medias related with project
- * [ ] Custom audio player 
- * [ ] Album/song cover integration
+ * [x] Custom audio player 
+ * [x] Album/song cover integration
  * [ ] Switch language on main page (English)
 
 
