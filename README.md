@@ -11,6 +11,7 @@ A basic web interface for Azuaracast radio station. Grabbing radio informations 
  * [x] Custom audio player 
  * [x] Album/song cover integration
  * [ ] Volume control
+ * [ ] EQ Visualizer
  * [ ] Switch language on main page (English)
 
 
