@@ -145,22 +145,51 @@
 //volume icon display
 $(document).ready(function() {
     var volumeControl = document.getElementById('volume');
-    
+    var lecteurAudio = document.getElementById('lecteurAudio');
+    var icon = $('#muteVol').find('i');
+
+    var savedVolume = localStorage.getItem('savedVolume');
+    if (savedVolume !== null) {
+        volumeControl.value = savedVolume;
+        updateVolumeIcon(savedVolume);
+        lecteurAudio.volume = savedVolume;
+    }
+
     $('#muteVol').on('click', function() {
-        var icon = $(this).find('i');
-        var savedVolume = volumeControl.value;
-        
-        if (icon.hasClass('fa-volume-high')) {
-            icon.removeClass('fa-volume-high').addClass('fa-volume-off');
-            lecteurAudio.volume = 0;
-            localStorage.setItem('savedVolume', savedVolume);
-        } else {
-            icon.removeClass('fa-volume-off').addClass('fa-volume-high');
+        var currentVolume = volumeControl.value;
+        if (currentVolume === '0') {
             volumeControl.value = savedVolume;
             lecteurAudio.volume = savedVolume;
+            updateVolumeIcon(savedVolume);
+            localStorage.setItem('savedVolume', savedVolume);
+        } else {
+            savedVolume = volumeControl.value;
+            volumeControl.value = '0';
+            lecteurAudio.volume = 0;
+            icon.removeClass('fa-volume-high fa-volume-low').addClass('fa-volume-xmark');
+            localStorage.setItem('savedVolume', '0');
         }
     });
+
+    function updateVolumeIcon(volume) {
+    if (volume === '0') {
+        icon.removeClass('fa-volume-high fa-volume-low').addClass('fa-volume-xmark');
+    } else if (volume > 0.51) {
+        icon.removeClass('fa-volume-xmark fa-volume-low').addClass('fa-volume-high');
+    } else {
+        icon.removeClass('fa-volume-high fa-volume-xmark').addClass('fa-volume-low');
+    }
+}
+
+
+    volumeControl.addEventListener('input', function() {
+        var currentVolume = this.value;
+        lecteurAudio.volume = currentVolume;
+        updateVolumeIcon(currentVolume);
+        localStorage.setItem('savedVolume', currentVolume);
+    });
 });
+
 
 //metadata + timer
 
