@@ -41,10 +41,13 @@
 
     <div class="lecteur-audio">
         <div class="volume-control">
-        <p><i class="fa-solid fa-volume-high"></i>
+            <button id="muteVol">
+                      <p><i class="fa-solid fa-volume-high"></i>
+           </button>
+  
             <label for="volume"></label>
         <input type="range" id="volume" min="0" max="1" step="0.1" value="1" />
-        </div></p>
+        </div></p>     
         <button id="playButton">
             <div class="play-button">
             <i id="icon" class="fas fa-play"></i>
@@ -75,7 +78,7 @@
 </footer>
   <div class="bgcentre">
    <div class="three">
-    <h2><br><br>Planning de diffusion</h2>
+    <h2><br><br><br>Planning de diffusion</h2>
     <p>(Effectif jusqu'au lendemain, minuit.)</p>
     <table id="scheduleTable">
     <thead>
@@ -112,7 +115,7 @@ $(document).ready(function(){
 
 //audio player scripts
 
-//icon display
+//play icon display
 
     $(document).ready(function() {
       $('#playButton').on('click', function() {
@@ -136,6 +139,27 @@ $(document).ready(function(){
         } 
       });
     });
+//volume icon display
+$(document).ready(function() {
+    var volumeControl = document.getElementById('volume');
+    
+    $('#muteVol').on('click', function() {
+        var icon = $(this).find('i');
+        var savedVolume = volumeControl.value;
+        
+        if (icon.hasClass('fa-volume-high')) {
+            icon.removeClass('fa-volume-high').addClass('fa-volume-off');
+            lecteurAudio.volume = 0;
+            localStorage.setItem('savedVolume', savedVolume);
+        } else {
+            icon.removeClass('fa-volume-off').addClass('fa-volume-high');
+            volumeControl.value = savedVolume;
+            lecteurAudio.volume = savedVolume;
+        }
+    });
+});
+
+
 
 //metadata + timer
 

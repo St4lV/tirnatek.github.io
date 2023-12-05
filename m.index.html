@@ -65,10 +65,13 @@
 <footer>
 
     <div class="volume-control">
-        <p><i class="fa-solid fa-volume-high"></i>
-            <label for="volume"></label>
-            <input type="range" id="volume" min="0" max="1" step="0.1" value="1" />
-        </div></p>
+        <button id="muteVol">
+                  <p><i class="fa-solid fa-volume-high"></i>
+       </button>
+
+        <label for="volume"></label>
+    <input type="range" id="volume" min="0" max="1" step="0.1" value="1" />
+    </div></p>  
 <button id="playButton">
     <div class="play-button"></div>
             <i id="icon" class="fas fa-play"></i>
@@ -139,6 +142,25 @@
         } 
       });
     });
+//volume icon display
+$(document).ready(function() {
+    var volumeControl = document.getElementById('volume');
+    
+    $('#muteVol').on('click', function() {
+        var icon = $(this).find('i');
+        var savedVolume = volumeControl.value;
+        
+        if (icon.hasClass('fa-volume-high')) {
+            icon.removeClass('fa-volume-high').addClass('fa-volume-off');
+            lecteurAudio.volume = 0;
+            localStorage.setItem('savedVolume', savedVolume);
+        } else {
+            icon.removeClass('fa-volume-off').addClass('fa-volume-high');
+            volumeControl.value = savedVolume;
+            lecteurAudio.volume = savedVolume;
+        }
+    });
+});
 
 //metadata + timer
 
