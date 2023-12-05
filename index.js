@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+function onLoad() {
     var lecteurAudio = document.getElementById("lecteurAudio");
     var sourceAudio = "";
 
@@ -12,9 +12,17 @@ document.addEventListener('DOMContentLoaded', function () {
             lecteurAudio.play();
         });
     });
+
     updateHeureParis();
     setInterval(updateHeureParis, 1000);
-});
+
+    var volumeControl = document.getElementById('volume');
+    volumeControl.addEventListener('input', function() {
+        lecteurAudio.volume = this.value;
+    });
+}
+
+document.addEventListener('DOMContentLoaded', onLoad);
 
 function updateHeureParis() {
     var date = new Date();

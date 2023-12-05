@@ -15,30 +15,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=PT+Sans+Narrow&display=swap" rel="stylesheet">  
-
-<style>
-    table{
-        border-collapse: collapse;
-
-    }
-    th, td {
-        border: 1px solid rgb(255, 255, 255);
-        padding: 4px;
-        text-align: center;
-    }
-</style>
-<script>
-$(document).ready(function(){
-            var userAgent = navigator.userAgent;
-            if (userAgent.match(/Mobile/i)) {
-      // Si c'est un appareil mobile
-             window.location.href = 'm.index.html';
-            } else {
-      if(window.location.href.indexOf('index.html') === -1) {
-        window.location.href = 'index.html';
-      }}
-});
-</script>
 </head>
 
 <body>
@@ -61,9 +37,14 @@ $(document).ready(function(){
 </div>
 <div id="playlist">Playlist</div>
         </header>
-
 <footer>
+
     <div class="lecteur-audio">
+        <div class="volume-control">
+        <p><i class="fa-solid fa-volume-high"></i>
+            <label for="volume"></label>
+        <input type="range" id="volume" min="0" max="1" step="0.1" value="1" />
+        </div></p>
         <button id="playButton">
             <div class="play-button">
             <i id="icon" class="fas fa-play"></i>
@@ -81,8 +62,58 @@ $(document).ready(function(){
     <div id="musicInfoContainer"></div>
     <div id="elapsedCounter" style="display: none;"></div>
 </div>
-    
+</div>
+</div>
+</div>
+
+<div id="np-cover"></div>
+  <div class="audiobuttons">
+    <button class="audioButton" data-source="https://tirnatek.fr/listen/tntr/tntr128.mp3">MP3 128kbps</button>
+    <button class="audioButton" data-source="https://tirnatek.fr/listen/tntr/tntr320.mp3">MP3 320kbps</button>
+    <button class="audioButton" data-source="https://tirnatek.fr/listen/tntr/tntr96.mp3">MP3 96kbps</button>
+</div>
+</footer>
+  <div class="bgcentre">
+   <div class="three">
+    <h2><br><br>Planning de diffusion</h2>
+    <p>(Effectif jusqu'au lendemain, minuit.)</p>
+    <table id="scheduleTable">
+    <thead>
+        <tr>
+            <th>Playlist</th>
+            <th>Heure de diffusion</th>
+        </tr>
+    </thead>
+    <tbody id="scheduleBody",class="policePlaylist">
+    </tbody>
+</table>
+   </div>
+   <div class="four">
+          <p>N'hésitez pas à faire des suggestions de sons, sur l'interface, les playlists ect.. On prends ! :)</p>
+          <p>TeamTNTR@Radio~# Projet à but éducatif svp la SACEM soyez cool</p>
+          <p>TirnatekRadio@Beta2.2 <br> <br> <br>  <br> <br><br>  <br>  <br>  <br>Nooo ..  don't look at my code like this.. Senpaiiiiii{">.<}</p>
+        </div>
+</div>
+</div>
+</body>
 <script>
+//mobile or pc
+
+$(document).ready(function(){
+            var userAgent = navigator.userAgent;
+            if (userAgent.match(/Mobile/i)) {
+      // Si c'est un appareil mobile
+             window.location.href = 'm.index.html';
+            } else {
+      if(window.location.href.indexOf('index.html') === -1) {
+        window.location.href = 'index.html';
+      }}
+});
+
+//audio player scripts
+
+//icon display
+
     $(document).ready(function() {
       $('#playButton').on('click', function() {
         var lecteurAudio = document.getElementById("lecteurAudio");
@@ -105,6 +136,8 @@ $(document).ready(function(){
         } 
       });
     });
+
+//metadata + timer
 
     var currentSongId = null;
     var formattedDuration = null;
@@ -181,19 +214,8 @@ $(document).ready(function(){
     $(document).ready(function () {
         loadNowPlaying();
     });
-        </script>        
-</div>
-</div>
-</div>
-<div id="np-cover"></div>
-  <div class="audiobuttons">
-    <button class="audioButton" data-source="https://tirnatek.fr/listen/tntr/tntr128.mp3">MP3 128kbps</button>
-    <button class="audioButton" data-source="https://tirnatek.fr/listen/tntr/tntr320.mp3">MP3 320kbps</button>
-    <button class="audioButton" data-source="https://tirnatek.fr/listen/tntr/tntr96.mp3">MP3 96kbps</button>
-</div>
-</footer>
 
-<script>
+//Display planning table for next 48h
   function dynamicSchedule() {
       jQuery.ajax({
           cache: false,
@@ -233,28 +255,4 @@ $(document).ready(function(){
 });
 
 </script>
-
-  <div class="bgcentre">
-   <div class="three">
-    <h2><br><br>Planning de diffusion</h2>
-    <p>(Effectif jusqu'au lendemain, minuit.)</p>
-    <table id="scheduleTable">
-    <thead>
-        <tr>
-            <th>Playlist</th>
-            <th>Heure de diffusion</th>
-        </tr>
-    </thead>
-    <tbody id="scheduleBody",class="policePlaylist">
-    </tbody>
-</table>
-   </div>
-   <div class="four">
-          <p>N'hésitez pas à faire des suggestions de sons, sur l'interface, les playlists ect.. On prends ! :)</p>
-          <p>TeamTNTR@Radio~# Projet à but éducatif svp la SACEM soyez cool</p>
-          <p>TirnatekRadio@Beta2.2 <br> <br> <br>  <br> <br><br>  <br>  <br>  <br>Nooo ..  don't look at my code like this.. Senpaiiiiii{">.<}</p>
-        </div>
-</div>
-</div>
-</body>
 </html>

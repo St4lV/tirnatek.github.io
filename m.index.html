@@ -47,6 +47,7 @@
     <p>Heure Actuelle : <span id="heureParis"></span></p>
 </div>
 <div id="playlist">Playlist</div>
+<br>
 <div class="lecteur-audio">
     <div class="l-a-display"> 
         <audio id="lecteurAudio" controls>
@@ -63,20 +64,72 @@
         </header>
 <footer>
 
+    <div class="volume-control">
+        <p><i class="fa-solid fa-volume-high"></i>
+            <label for="volume"></label>
+            <input type="range" id="volume" min="0" max="1" step="0.1" value="1" />
+        </div></p>
 <button id="playButton">
     <div class="play-button"></div>
             <i id="icon" class="fas fa-play"></i>
     </div>
 </button>  
 
+
     <div class="metadata">
         <div id="musicInfoContainer"></div>
         <div id="elapsedCounter" style="display: none;"></div>
-    <p> <br>TirnatekRadio@Beta2.2 <br> ~-~ </p>
+    <p> <br>TirnatekRadio@Beta2.2 </p>
 </div>
 </div>
+        <div id="np-cover"></div>
+</footer>
 
+  <div class="bgcentre">
+
+   <div class="three">
+
+    <h2><br><br><br><br>Planning de diffusion</h2>
+    <p>(Effectif jusqu'au lendemain, minuit.)</p>
+
+    <table id="scheduleTable">
+    <thead>
+        <tr>
+            <th>Playlist</th>
+            <th>Heure de diffusion</th>
+        </tr>
+    </thead>
+    <tbody id="scheduleBody",class="policePlaylist">
+    </tbody>
+</table>
+   </div>
+<div class="datefin">
+   <p><br>  <br>  <br>  <br>  <br>  <br>  <br>  >@2023tntr</p>    
+</div>
+   <div class="four">
+          <p>N'hésitez pas à faire des suggestions de sons, sur l'interface, les playlists ect.. On prends ! :)</p>
+          <p>TeamTNTR@Radio~# Projet à but éducatif svp la SACEM soyez cool <br>  <br> <br>  <br>  <br>  <br>  <br>  <br>  <br>  <br><br>  <br>  <br>Si tu vois ça tu es un ptit malin ou tu as un grand écran</p>
+</div>          
+</div>
+</div>
 <script>
+//mobile or pc
+
+$(document).ready(function(){
+            var userAgent = navigator.userAgent;
+            if (userAgent.match(/Mobile/i)) {
+      // Si c'est un appareil mobile
+             window.location.href = 'm.index.html';
+            } else {
+      if(window.location.href.indexOf('index.html') === -1) {
+        window.location.href = 'index.html';
+      }}
+});
+
+//audio player scripts
+
+//icon display
+
     $(document).ready(function() {
       $('#playButton').on('click', function() {
         var lecteurAudio = document.getElementById("lecteurAudio");
@@ -99,7 +152,9 @@
         } 
       });
     });
-    
+
+//metadata + timer
+
     var currentSongId = null;
     var formattedDuration = null;
     var startTime = null;
@@ -146,11 +201,11 @@
             var duration = parseInt(np.now_playing.duration) || 0; // Récupérez la durée en secondes directement
             var songId = np.now_playing.sh_id;
             var songImg = np.now_playing.song.art;
-    
+
             updateMusicInfo(artist, title, elapsedValue, duration, songId, songImg);
             
             $('#np-cover').html(`<img src="${songImg}" alt="Cover">`);
-    
+
             if (np.live.is_live === false) {
                 if (np.now_playing.playlist !== "") {
                     $('#playlist').html('<span class="badge badge-info">Playlist: ' + np.now_playing.playlist + '</span>');
@@ -167,7 +222,7 @@
             setTimeout(loadNowPlaying, 30000);
         });
     }
-    
+
     function updateProgressBar(value) {
         $('#progress-bar').css('width', value + '%');
     }
@@ -175,77 +230,46 @@
     $(document).ready(function () {
         loadNowPlaying();
     });
-    
-    
-        </script> 
-        <div id="np-cover"></div>
-</footer>
-<script>
-    function dynamicSchedule() {
-        jQuery.ajax({
-            cache: false,
-            dataType: "json",
-            url: 'https://tirnatek.fr/api/station/tntr/schedule?now=now&rows=48',
-  
-            success: function(gp) {
-                var namesArray = [];
-                var startTimesArray = [];
-  
-                $.each(gp, function(index, playlist) {
-                    namesArray.push(playlist.name);
-                  var startDate = new Date(playlist.start);
-                  if (isNaN(startDate)) {
-                      const parts = playlist.start.split(/[\sT\+]/);
-                      const [year, month, day] = parts[0].split('-');
-                      const [hour, minute, second] = parts[1].split(':');
-                      startDate = new Date(year, month - 1, day, hour, minute, second);}
-  
-                  var formattedTime = startDate.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
-                  startTimesArray.push(formattedTime);});
-  
-              var tbody = $('#scheduleBody');
-              tbody.empty();
-              for (var i = 0; i < namesArray.length; i++) {
-                  var newRow = $('<tr>');
-                  newRow.append($('<td>').text(namesArray[i]));
-                  newRow.append($('<td>').text(startTimesArray[i]));
-                  tbody.append(newRow);
-              }},
-            error: function(xhr, status, error) {
-                console.error(status, error);
-            }}); }
-  
-    jQuery(function() {
-      dynamicSchedule();
-  });
-  </script>
 
-  <div class="bgcentre">
+//Display planning table for next 48h
+  function dynamicSchedule() {
+      jQuery.ajax({
+          cache: false,
+          dataType: "json",
+          url: 'https://tirnatek.fr/api/station/tntr/schedule?now=now&rows=48',
 
-   <div class="three">
+          success: function(gp) {
+              var namesArray = [];
+              var startTimesArray = [];
 
-    <h2><br><br><br><br>Planning de diffusion</h2>
-    <p>(Effectif jusqu'au lendemain, minuit.)</p>
+              $.each(gp, function(index, playlist) {
+                  namesArray.push(playlist.name);
+                var startDate = new Date(playlist.start);
+                if (isNaN(startDate)) {
+                    const parts = playlist.start.split(/[\sT\+]/);
+                    const [year, month, day] = parts[0].split('-');
+                    const [hour, minute, second] = parts[1].split(':');
+                    startDate = new Date(year, month - 1, day, hour, minute, second);}
 
-    <table id="scheduleTable">
-    <thead>
-        <tr>
-            <th>Playlist</th>
-            <th>Heure de diffusion</th>
-        </tr>
-    </thead>
-    <tbody id="scheduleBody",class="policePlaylist">
-    </tbody>
-</table>
-   </div>
-<div class="datefin">
-   <p><br>  <br>  <br>  <br>  <br>  <br>  <br>  >@2023tntr</p>    
-</div>
-   <div class="four">
-          <p>N'hésitez pas à faire des suggestions de sons, sur l'interface, les playlists ect.. On prends ! :)</p>
-          <p>TeamTNTR@Radio~# Projet à but éducatif svp la SACEM soyez cool <br>  <br> <br>  <br>  <br>  <br>  <br>  <br>  <br>  <br><br>  <br>  <br>Si tu vois ça tu es un ptit malin ou tu as un grand écran</p>
-</div>          
-</div>
-</div>
+                var formattedTime = startDate.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
+                startTimesArray.push(formattedTime);});
+
+            var tbody = $('#scheduleBody');
+            tbody.empty();
+            for (var i = 0; i < namesArray.length; i++) {
+                var newRow = $('<tr>');
+                newRow.append($('<td>').text(namesArray[i]));
+                newRow.append($('<td>').text(startTimesArray[i]));
+                tbody.append(newRow);
+            }},
+          error: function(xhr, status, error) {
+              console.error(status, error);
+          }}); }
+
+  jQuery(function() {
+    dynamicSchedule();
+});
+
+</script>
 </body>
 </html>

@@ -10,7 +10,7 @@ A basic web interface for Azuaracast radio station. Grabbing radio informations 
  * [x] Images buttons with link to social medias related with project
  * [x] Custom audio player 
  * [x] Album/song cover integration
- * [ ] Volume control
+ * [x] Volume control
  * [ ] EQ Visualizer
  * [ ] Switch language on main page (English)
 

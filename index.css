@@ -69,13 +69,13 @@ body {
     top:35;
     font-size: 3em
   }
-.apb-github {
-  color: #fff;
-  position: fixed;
-  text-align: left;
-  right: 50;
-  top:35;
-  font-size: 3em
+  .apb-github {
+    color: #fff;
+    position: fixed;
+    text-align: left;
+    right: 50;
+    top:35;
+    font-size: 3em
 }
   footer {
     position: fixed;
@@ -143,21 +143,37 @@ body {
   #playButton{
     font-size: 3em;
     border: 10px;
-    background-color: #000000;
     color: #fff;
     position: fixed;
     text-align: left;
-    left: 175;
+    left: 25%;
     bottom: 67.5;
+    background-color: black;
   }
   img{
     box-sizing: content-box;
     border: 10px;
     position: fixed;
     text-align: left;
-    left: 5;
-    bottom: 35;
-    width: 100px;
+    left: 2%;
+    bottom: 3%;
+    width: 125px;
     padding: 20px;
     height: auto;
   }
+  table{
+    border-collapse: collapse;
+
+}
+th, td {
+    border: 1px solid rgb(255, 255, 255);
+    padding: 4px;
+    text-align: center;
+}
+.volume-control{
+    position: fixed;
+    right: 2%;
+    font-size: 2em;
+    bottom: 4%;
+    width: 25%;
+}
