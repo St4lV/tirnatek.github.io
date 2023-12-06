@@ -18,6 +18,9 @@
 </head>
 
 <body>
+    <!--
+    <img src="psdream.jpg" id="psdreamclass">
+    -->
 <header>
    <a href="https://instagram.com/tirnatek" class="lieninsta" target="_blank">
      <div class="apb-insta">
@@ -50,7 +53,7 @@
         </div></p>     
         <button id="playButton">
             <div class="play-button">
-            <i id="icon" class="fas fa-play"></i>
+            <i id="icon-play" class="fas fa-play"></i>
         </div>
     </button>    
 
@@ -92,10 +95,10 @@
 </table>
    </div>
    <div class="four">
-          <p>N'hésitez pas à faire des suggestions de sons, sur l'interface, les playlists ect.. On prends ! :)</p>
-          <p>TeamTNTR@Radio~# Projet à but éducatif svp la SACEM soyez cool</p>
-          <p>TirnatekRadio@Beta2.2 <br> <br> <br>  <br> <br><br>  <br>  <br>  <br>Nooo ..  don't look at my code like this.. Senpaiiiiii{">.<}</p>
-        </div>
+          <p><br>N'hésitez pas à faire des suggestions On prends ! :)
+          <br><br>Projet à but éducatif svp la SACEM soyez cool
+          <br><br>TirnatekRadio@Beta2.2 <br><br><br><br>  <br><br><br>  <br>  <br>  <br>TeamTNTR@Radio:~#2023</p>
+</div>
 </div>
 </div>
 </body>
@@ -112,7 +115,6 @@ $(document).ready(function(){
         window.location.href = 'index.html';
       }}
 });
-
 //audio player scripts
 
 //play icon display
@@ -135,7 +137,7 @@ $(document).ready(function(){
       $('.audioButton').on('click', function() {
         var icon = $('#icon');
         if (icon.hasClass('fa-play')) {
-          icon.removeClass('fa-play').addClass('fa-stop'); // Remplacez les classes pour changer l'icône
+          icon.removeClass('fa-play').addClass('fa-stop');
         } 
       });
     });
@@ -187,6 +189,7 @@ $(document).ready(function() {
     });
 });
 
+
 //metadata + timer
 
     var currentSongId = null;
@@ -195,7 +198,7 @@ $(document).ready(function() {
     var timer = null;
     
     function updateMusicInfo(artist, title, elapsedValue, duration, songId) {
-        formattedDuration = duration; // Gardez la durée au format initial (en secondes)
+        formattedDuration = duration; 
         var musicInfo = `   <p>${artist} - ${title}</p><p id="elapsedCounter">${formatTime(elapsedValue)} / ${formatTime(formattedDuration)}</p>
         <div id="custom-progress"> <div id="progress-bar"></div>
         </div><div></div>`;
@@ -232,13 +235,13 @@ $(document).ready(function() {
             var artist = np.now_playing.song.artist;
             var title = np.now_playing.song.title;
             var elapsedValue = parseInt(np.now_playing.elapsed) || 0;
-            var duration = parseInt(np.now_playing.duration) || 0; // Récupérez la durée en secondes directement
+            var duration = parseInt(np.now_playing.duration) || 0; 
             var songId = np.now_playing.sh_id;
             var songImg = np.now_playing.song.art;
 
             updateMusicInfo(artist, title, elapsedValue, duration, songId, songImg);
             
-            $('#np-cover').html(`<img src="${songImg}" alt="Cover">`);
+            $('#np-cover').html(`<img src="${songImg}" id="cover-np-song" alt="Cover">`);
 
             if (np.live.is_live === false) {
                 if (np.now_playing.playlist !== "") {
