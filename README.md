@@ -1,7 +1,6 @@
 # Tirnatek Radio Project
 ## Amateur Webradio Interface using Azuracast
 A basic web interface for Azuaracast radio station. Grabbing radio informations from a .json file available with Azuracast API. 
-## I'm moving the project on a react one, when i will have a fonctionnal version i'll update all the files.
 ### Progression:
  * [x] Display playlist, artist and name of actual playing song.
  * [x] Audio flux quality choice (128kbps (default); 320kbps; 96kbps)
@@ -20,3 +19,5 @@ A basic web interface for Azuaracast radio station. Grabbing radio informations 
 
 
 (As i'm french, display language is currently in french on deployed page)
+
+## I'm moving the project on a react one, when i will have a fonctionnal version i'll update all the files.
