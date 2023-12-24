@@ -17,6 +17,6 @@ A basic web interface for Azuaracast radio station. Grabbing radio informations 
 
 ## Advanced version using NodeJS & React:
 
-https://github.com/St4lV/docker-react-azuracast-web-interface/
+New project : https://github.com/St4lV/docker-react-azuracast-web-interface/
 
 ---
