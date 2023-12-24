@@ -1,5 +1,5 @@
 # Tirnatek Radio Project
-## Amateur Webradio Interface using Azuracast
+## Amateur Webradio basic Web Interface using Azuracast
 A basic web interface for Azuaracast radio station. Grabbing radio informations from a .json file available with Azuracast API. 
 ### Progression:
  * [x] Display playlist, artist and name of actual playing song.
@@ -12,12 +12,5 @@ A basic web interface for Azuaracast radio station. Grabbing radio informations 
  * [x] Album/song cover integration
  * [x] Volume control
   ---
-  ### Will be done later cause need to setup a server 
-  (soon, we're planning to setup an home one with a friend before the end of the month)
- * [ ] EQ Visualizer
- * [ ] Switch language on main page (English, French, maybe more)
 
-
-(As i'm french, display language is currently in french on deployed page)
-
-## I'm moving the project on a react one, when i will have a fonctionnal version i'll update all the files.
+  Project using mostly jQuerry in index.html, can be deployed directly free 2 u 2 use .
