@@ -30,7 +30,7 @@
      <div class="apb-discord">
          <i class="fa-brands fa-discord"></i></div></a>
     
-    <a href="https://github.com/St4lV/St4lV.github.io" class="liengithub" target="_blank">
+    <a href="https://st4lv.github.io/tirnatek.github.io/index.html" class="liengithub" target="_blank">
      <div class="apb-github">
         <i class="fa-brands fa-github"></i></div></a>
 
@@ -59,7 +59,7 @@
 
     <div class="l-a-display"> 
         <audio id="lecteurAudio" controls>
-            <source src="https://tirnatek.fr/listen/tntr/tntr128.mp3" type="audio/mp3" display="none">
+            <source src="https://radio.tirnatek.fr/listen/tntr/tntr128.mp3" type="audio/mp3" display="none">
             Votre navigateur ne supporte pas l'élément audio.
         </audio>
     </div> 
@@ -74,9 +74,9 @@
 
 <div id="np-cover"></div>
   <div class="audiobuttons">
-    <button class="audioButton" data-source="https://tirnatek.fr/listen/tntr/tntr128.mp3">MP3 128kbps</button>
-    <button class="audioButton" data-source="https://tirnatek.fr/listen/tntr/tntr320.mp3">MP3 320kbps</button>
-    <button class="audioButton" data-source="https://tirnatek.fr/listen/tntr/tntr96.mp3">MP3 96kbps</button>
+    <button class="audioButton" data-source="https://radio.tirnatek.fr/listen/tntr/tntr128.mp3">MP3 128kbps</button>
+    <button class="audioButton" data-source="https://radio.tirnatek.fr/listen/tntr/tntr320.mp3">MP3 320kbps</button>
+    <button class="audioButton" data-source="https://radio.tirnatek.fr/listen/tntr/tntr96.mp3">MP3 96kbps</button>
 </div>
 </footer>
   <div class="bgcentre">
@@ -231,7 +231,7 @@ $(document).ready(function() {
     }
     
     function loadNowPlaying() {
-        $.getJSON('https://tirnatek.fr/api/nowplaying_static/tntr.json', function (np) {
+        $.getJSON('https://radio.tirnatek.fr/api/nowplaying_static/tntr.json', function (np) {
             var artist = np.now_playing.song.artist;
             var title = np.now_playing.song.title;
             var elapsedValue = parseInt(np.now_playing.elapsed) || 0;
@@ -273,7 +273,7 @@ $(document).ready(function() {
       jQuery.ajax({
           cache: false,
           dataType: "json",
-          url: 'https://tirnatek.fr/api/station/tntr/schedule?now=now&rows=48',
+          url: 'https://radio.tirnatek.fr/api/station/tntr/schedule?now=now&rows=48',
 
           success: function(gp) {
               var namesArray = [];
